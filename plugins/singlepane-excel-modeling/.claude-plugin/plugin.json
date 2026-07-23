@@ -1,6 +1,6 @@
 {
   "name": "singlepane-excel-modeling",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Build Excel financial models for hotel portfolios with the Singlepane Excel add-in's SP.* functions: summary P&Ls, department schedules, variance reports, portfolio rollups, STR dashboards, and pace reports using canonical USALI layouts.",
   "author": {
     "name": "Singlepane",

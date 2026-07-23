@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "singlepane": {
+      "type": "http",
+      "url": "https://ai.singlepaneapp.com/mcp"
+    }
+  }
+}

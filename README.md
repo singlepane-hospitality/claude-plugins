@@ -12,6 +12,11 @@ variance reports, portfolio rollups, STR comp-set dashboards, and OTB/pace repor
 Requires the Singlepane Excel add-in (and a Singlepane login) for the workbooks to
 populate with data.
 
+The plugin also configures the **Singlepane MCP connector**
+(`https://ai.singlepaneapp.com/mcp`), so Claude can look up your hotels and query
+Singlepane data directly while building models. On first use you'll be prompted to
+sign in to Singlepane to authorize the connection.
+
 ## Install
 
 In Claude Code or the Claude desktop app:
