@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "plugins/singlepane-excel-modeling/skills/**"
+      - "plugins/singlepane/skills/**"
   workflow_dispatch:
 
 permissions:
@@ -18,7 +18,7 @@ jobs:
 
       - name: Zip skill folder into .skill
         run: |
-          cd plugins/singlepane-excel-modeling/skills
+          cd plugins/singlepane/skills
           zip -r "$GITHUB_WORKSPACE/singlepane-excel-modeling.skill" singlepane-excel-modeling \
             -x "*.DS_Store"
 

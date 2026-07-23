@@ -1,0 +1,20 @@
+{
+  "name": "singlepane",
+  "version": "1.0.0",
+  "description": "Singlepane for Claude: the Singlepane MCP connector plus skills for hospitality asset-management workflows — currently Excel financial modeling with the Singlepane Excel add-in (summary P&Ls, department schedules, variance reports, portfolio rollups, STR dashboards, pace reports).",
+  "author": {
+    "name": "Singlepane",
+    "url": "https://www.singlepaneapp.com"
+  },
+  "homepage": "https://www.singlepaneapp.com",
+  "keywords": [
+    "singlepane",
+    "hospitality",
+    "hotel",
+    "excel",
+    "usali",
+    "financial-modeling",
+    "str",
+    "asset-management"
+  ]
+}
