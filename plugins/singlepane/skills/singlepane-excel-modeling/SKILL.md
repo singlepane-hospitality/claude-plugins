@@ -1,6 +1,6 @@
 ---
 name: singlepane-excel-modeling
-description: Build Excel financial models, reports, and dashboards for hotel portfolios using the Singlepane Excel add-in's SP.* custom functions (SP.FINANCIALS, SP.FINANCIALS_AGG, SP.STR, SP.OTB, SP.FILTER, and more). Use this skill whenever the user mentions Singlepane, SP. functions, hotel P&L / USALI accounts, budgets/forecasts/reforecasts, STR or comp-set index data, on-the-books/pace data, flow-through, or wants to build or modify an Excel workbook that pulls hotel portfolio data — even if they don't name the add-in explicitly. Also use it when reviewing or debugging a workbook that already contains SP.* formulas.
+description: Build Excel financial models, reports, and dashboards for hotel portfolios using the Singlepane Excel add-in's SP.* custom functions (SP.FINANCIALS, SP.FINANCIALS_AGG, SP.STR, SP.OTB, SP.FILTER, and more). Use this skill whenever the user mentions Singlepane, SP. functions, hotel P&L / USALI accounts, budgets/forecasts/reforecasts, STR or comp-set index data, on-the-books/pace data, flow-through, or wants to build or modify an Excel workbook that pulls hotel portfolio data — even if they don't name the add-in explicitly, and whether the workbook should be live/refreshable (SP.* formulas) or a one-time static export (values via the Singlepane MCP connector). Also use it when reviewing or debugging a workbook that already contains SP.* formulas, or when retrofitting/converting an existing model or report — one built on pasted exports, hardcoded values, or data-tab lookups — to live Singlepane formulas.
 ---
 
 # Building Excel models with the Singlepane add-in
@@ -10,7 +10,31 @@ exposes custom functions under the `SP.` namespace (e.g. `=SP.FINANCIALS(...)`) 
 live data — P&L actuals/budgets/forecasts, STR comp-set performance, on-the-books pace,
 guest sentiment, interest rates — straight into cells.
 
-## The one thing to understand first
+## First decision: live formulas or static values?
+
+There are two ways to get Singlepane numbers into a workbook — pick one before
+building:
+
+1. **Live / refreshable — SP.* formulas (the rest of this skill).** The workbook
+   recalculates against Singlepane whenever the user refreshes: next month's close,
+   a re-pointed property code, a different version — all without Claude re-running
+   anything. This is the default for any model, report, or dashboard the user will
+   keep using.
+2. **Static / one-time — the MCP path.** Query the Singlepane MCP connector for the
+   actual numbers and write plain values into the cells (normal xlsx tooling, no
+   SP.* formulas, no fix-up script). The file works for anyone with no add-in or
+   login — but every update means Claude re-running every query, which is slower,
+   more expensive, and easy to drift from the platform.
+
+If the user hasn't made it obvious, ask: *"Is this a one-time export, or a workbook
+you'll refresh or re-point later?"* Recurring/reusable → SP.* formulas. One-off
+snapshot, or recipients without the add-in → MCP static values. (A third option
+when the user has the add-in: build with SP.* formulas, refresh in Excel, then use
+the task pane's **Convert To Values** on a copy — best of both for share-outs.)
+On the MCP path, the ground-truth and USALI-selection guidance below still applies —
+values come only from MCP query results, never fabricated.
+
+## The one thing to understand first (SP.* path)
 
 **You author formulas; Excel computes them.** SP.* functions only return values inside
 Excel while the user is signed in to the add-in (Home ribbon → singlepane → Login).
@@ -33,7 +57,8 @@ error or wrong data:
   (`=SP.GET_USALI_REFERENCE()`).
 
 If you're working in a live workbook, read those sheets before writing formulas. If
-you're building a file offline and can't see them, ask the user for the codes/lines they
+you're building a file offline and can't see them, verify property codes through the
+Singlepane MCP connector when it's available, ask the user for the codes/lines they
 want, or build the model so it reads codes from a cell the user fills in — don't guess.
 Attribute values used in `SP.FILTER` (brand names, markets, management companies) are
 also exact strings from the user's data — pull them from "My Properties" when possible,
@@ -174,6 +199,26 @@ When creating an .xlsx outside Excel, write formulas as plain strings starting w
   valid enum values, cell references) instead, and state clearly in your summary that
   values appear after the user opens the file and signs in.
 - Don't pre-place values where a spill will land.
+
+## Retrofitting an existing workbook
+
+When the user already has a model or report fed by pasted data tabs, hardcoded numbers,
+or links to other workbooks and wants it live on Singlepane, follow
+[references/retrofit.md](references/retrofit.md) — the full survey → map → replace →
+validate procedure. The non-negotiables:
+
+- **Retrofit a copy, never the original.** The untouched original is the validation
+  baseline.
+- **Replace data sources, not model logic.** Only cells where data *enters* the
+  workbook (hardcoded actuals, lookups against pasted exports, external links) become
+  SP.* formulas; subtotals, variances, ratios, and the user's assumptions stay as they
+  are.
+- **Validate before cleanup.** Compare the retrofitted copy against the original after
+  sign-in and recalculation; delete or hide the old data tabs only after the user
+  accepts the comparison.
+- If editing the file programmatically, remember openpyxl drops charts, pivot tables,
+  and slicers on re-save — check for them first and warn, or do the retrofit inside
+  Excel instead.
 
 ## Troubleshooting a user's workbook
 
