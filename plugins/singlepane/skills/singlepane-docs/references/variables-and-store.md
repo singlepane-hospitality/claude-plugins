@@ -186,6 +186,28 @@ or accept editing the variable monthly.
 Slide text: `Revenue was <<Total Revenue>>, <<Rev Var | updown>>
 <<Rev Var | abs | abbrev:1,$>> vs a budget of <<Revenue Budget>>.`
 
+## Import Variables — handing definitions to a user without a donor
+
+The task pane can ingest variable definitions directly: **Advanced → Import
+Variables → paste JSON → Import**. Format notes for authoring import JSON:
+
+- Accepts either a bare array of variable defs (`[{...}, {...}]`) or a full store
+  object (`{"variables": [...]}`).
+- `id`s are regenerated on import — omit them when authoring for import (they're
+  only required when authoring a full store for the graft script).
+- Everything else (query fields with `{Global}` references, `defaultModifiers`,
+  computed `expression`s) imports as-is; the same validity rules as the rest of
+  this document apply.
+- Variables whose names already exist in the document are skipped, so re-importing
+  an updated JSON only adds the new names — renaming is how you force a
+  replacement, or the user deletes the old variable in the pane first.
+- The pane's **Export Variables** button produces this same format, so users can
+  also move variables between documents with it.
+
+When generating a document without a donor, deliver this JSON alongside the file
+and include the paste steps in the handoff — a JSON blob without instructions is
+useless to the user.
+
 ## How it is persisted in the file (context, not a to-do)
 
 The graft script writes the store as

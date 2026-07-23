@@ -99,9 +99,10 @@ formatted on the page today (see Step 4).
 
 Two routes, per the main skill's "Two ways to work":
 
-1. **User has the add-in open (or will)**: ship the copy with tags only and give the
-   user the variable definitions to enter in the pane — or let the pane's scan
-   propose the tag names and fill in the query parameters with them.
+1. **User has the add-in open (or will)**: ship the copy with tags only, plus the
+   variable definitions as JSON for the pane's **Advanced → Import Variables**
+   (`id`s optional — regenerated on import), with the paste steps spelled out in
+   the handoff.
 2. **Fully offline**: author the `sp_docs_store` JSON
    ([variables-and-store.md](variables-and-store.md)) and run `graft_sp_store.py`.
    Note the donor requirement: an existing deck that has never been saved with the

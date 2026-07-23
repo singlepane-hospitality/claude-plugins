@@ -56,18 +56,20 @@ user: open it, sign in in the Singlepane pane, and refresh.
 
 ## Two ways to work (within the add-in path)
 
-1. **Tags in a live document** — the user already has the add-in open. Author
-   `<<tags>>` in the text; the user (or the add-in's scan) defines any unknown
-   variables in the task pane. Tags referencing not-yet-defined variables are fine —
-   the pane proposes them for definition.
+1. **Tags + Import Variables** — author `<<tags>>` in the text and deliver the
+   variable definitions as JSON for the task pane's **Advanced → Import Variables**
+   (see [references/variables-and-store.md](references/variables-and-store.md) for
+   the accepted format — `id`s optional, they're regenerated on import). Tags
+   referencing not-yet-defined variables are fine until the import. **Never hand the
+   user a variables JSON without the paste instructions** (handoff step below) —
+   JSON without steps is a dead end for them.
 2. **Full offline generation (validated end-to-end)** — build the entire .pptx/.docx
    outside Office with variables *pre-defined*, so it opens ready to refresh. This
    requires embedding the add-in's variable store in the file's webextension part —
    done by the bundled graft script, which needs a **donor file** (any document of
    the same type previously saved with the add-in loaded; it supplies the add-in
-   reference wiring). If the user can't provide a donor, fall back to mode 1:
-   generate the document with tags only and have the user define the variables in
-   the pane.
+   reference wiring). If the user can't provide a donor, fall back to mode 1 —
+   the only difference for the user is one paste-and-import step on first open.
 
 ## Workflow
 
@@ -103,7 +105,12 @@ user: open it, sign in in the Singlepane pane, and refresh.
    ships a document whose variables don't exist.
 6. **Hand off**: tell the user to open the file, sign in in the Singlepane pane
    (ribbon button if the pane doesn't auto-open), and refresh. Numbers appear then —
-   not before.
+   not before. If the variables were **not** embedded (mode 1 / no donor), also
+   deliver the variables JSON and spell out what to do with it, e.g.: *"Open the
+   file, sign in in the Singlepane pane, then open **Advanced → Import Variables**,
+   paste the JSON below, click **Import**, and refresh. Until you do this, the tags
+   stay literal text."* Variables whose names already exist in the document are
+   skipped on import, so re-importing is safe.
 
 ## Where tags can live
 
