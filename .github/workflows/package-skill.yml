@@ -1,0 +1,32 @@
+name: Package .skill artifact
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "plugins/singlepane-excel-modeling/skills/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Zip skill folder into .skill
+        run: |
+          cd plugins/singlepane-excel-modeling/skills
+          zip -r "$GITHUB_WORKSPACE/singlepane-excel-modeling.skill" singlepane-excel-modeling \
+            -x "*.DS_Store"
+
+      - name: Publish rolling "latest" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view latest >/dev/null 2>&1 || \
+            gh release create latest --title "Latest skill build" \
+              --notes "Rolling build of singlepane-excel-modeling.skill for claude.ai org admins. Auto-updated on every merge to main."
+          gh release upload latest singlepane-excel-modeling.skill --clobber

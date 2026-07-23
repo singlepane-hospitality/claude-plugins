@@ -1,0 +1,35 @@
+{
+  "name": "singlepane",
+  "owner": {
+    "name": "Singlepane",
+    "url": "https://www.singlepaneapp.com"
+  },
+  "metadata": {
+    "description": "Official Singlepane plugins for Claude — hospitality analytics tooling for Singlepane customers.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "singlepane-excel-modeling",
+      "source": "./plugins/singlepane-excel-modeling",
+      "description": "Build Excel financial models for hotel portfolios with the Singlepane Excel add-in's SP.* functions: summary P&Ls, department schedules, variance reports, portfolio rollups, STR dashboards, and pace reports using canonical USALI layouts.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Singlepane",
+        "url": "https://www.singlepaneapp.com"
+      },
+      "homepage": "https://www.singlepaneapp.com/resources/categories/excel-add-in-help",
+      "category": "productivity",
+      "keywords": [
+        "singlepane",
+        "excel",
+        "hotel",
+        "hospitality",
+        "usali",
+        "financial-modeling",
+        "str",
+        "asset-management"
+      ]
+    }
+  ]
+}
